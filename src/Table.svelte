@@ -22,15 +22,29 @@
 
     let lines = data
       .replaceAll("\r", "")
+      .replaceAll("<h2>", "")
+      .replaceAll("</h2>", "")
+      .replaceAll("No rows found", "")
+      .replaceAll("Name_Vorname", "")
+      .replaceAll("<table  >", "")
+      .replaceAll("</table>", "")
+      .replaceAll("<tr>", "")
+      .replaceAll("</tr>", "")
+      .replaceAll("<th>", "")
+      .replaceAll("</th>", "")
+      .replaceAll("<td>", "")
+      .replaceAll("</td>", "")
       .split("\n")
       .filter((x) => x !== "");
+
+    console.log("lines", lines);
 
     for (let a = 0; a < lines.length; a++) {
       if (lines[a].includes("Abteilung")) {
         let shortened = lines[a].replace("Abteilung ", "");
+        console.log(shortened);
+
         currentSection = shortened as SectionNr;
-        //Weil nächste Zeile "Name_Vorname" ist
-        a++;
       } else {
         retData[currentSection].push(lines[a]);
       }

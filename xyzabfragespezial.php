@@ -44,25 +44,25 @@ printSection($db, "150", $abfrage3);
 printSection($db, "200", $abfrage4);
 printSection($db, "250", $abfrage5);
  */
-/* $ergebnis1 = odbc_exec($verbindung, $abfrage1);
+$ergebnis1 = odbc_exec($verbindung, $abfrage1);
 $ergebnis2 = odbc_exec($verbindung, $abfrage2);
 $ergebnis3 = odbc_exec($verbindung, $abfrage3);
 $ergebnis4 = odbc_exec($verbindung, $abfrage4);
-*//* $ergebnis5 = odbc_exec($verbindung, $abfrage5); */
+$ergebnis5 = odbc_exec($verbindung, $abfrage5);
 
 # odbc_result_all($ergebnis,"bgcolor='#FFCC33' width=300 height=100");
 # odbc_result_all($ergebnis1,"bgcolor='#FFCC33' width=300 height=100");
 
 echo "Abteilung 1";
-odbc_result_all($ergebnis1, "");
-echo "Abteilung 2";
-odbc_result_all($ergebnis2, "");
-echo "Abteilung 3";
-odbc_result_all($ergebnis3, "");
-echo "Abteilung 4";
-odbc_result_all($ergebnis4, "");
-echo "Abteilung 5";
-odbc_result_all($ergebnis5, "");
+odbc_result_all(utf8_encode($ergebnis1), "");
+echo "Abteilung 101";
+odbc_result_all(utf8_encode($ergebnis2), "");
+echo "Abteilung 150";
+odbc_result_all(utf8_encode($ergebnis3), "");
+echo "Abteilung 200";
+odbc_result_all(utf8_encode($ergebnis4), "");
+echo "Abteilung 250";
+odbc_result_all(utf8_encode($ergebnis5), "");
 
 /* echo "<table summary='Anwesenheitsliste'\n>";
 echo "<caption>Anwesenheit</caption>\n";
