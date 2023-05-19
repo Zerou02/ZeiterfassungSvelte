@@ -11,4 +11,5 @@ interface Config {
   serverPath: string;
   env: "dev" | "prod";
   seeAll: boolean;
+  debug: boolean;
 }

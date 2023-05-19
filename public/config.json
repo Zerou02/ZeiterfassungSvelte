@@ -1,5 +1,6 @@
 {
   "serverPath": "http://localhost/Zeiterfassung/xyzabfragespezial.php",
   "env": "prod",
-  "seeAll": true
+  "seeAll": true,
+  "debug": false
 }

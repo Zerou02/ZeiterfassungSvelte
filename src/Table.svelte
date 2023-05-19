@@ -8,6 +8,9 @@
   let sections: string[] = [];
 
   const parseData = (data: string): ParsedData => {
+    if ($config.debug) {
+      console.log("raw data", data);
+    }
     let currentSection: SectionNr = "1";
     let retData: ParsedData = {
       1: [],
@@ -35,6 +38,9 @@
     if (!$config.seeAll) {
       delete retData["1"];
     }
+    if ($config.debug) {
+      console.log("parsedData", retData);
+    }
     return retData;
   };
 
@@ -48,6 +54,9 @@
         row.push(x[a] || "");
       });
       retData.push(row);
+    }
+    if ($config.debug) {
+      console.log("tableData", retData);
     }
     return retData;
   };
