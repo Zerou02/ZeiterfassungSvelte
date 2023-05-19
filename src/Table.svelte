@@ -1,17 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { config } from "./store";
-  import TableColumn from "./TableColumn.svelte";
+  import TableRow from "./TableRow.svelte";
   import { gSectionNameMap } from "./globals";
 
-  let maxColumnHeight = 0;
-  let parsedData: ParsedData = {
-    1: [],
-    101: [],
-    150: [],
-    200: [],
-    250: [],
-  };
+  let tableData: TableParsedData = [];
+  let sections: string[] = [];
 
   const parseData = (data: string): ParsedData => {
     let currentSection: SectionNr = "1";
@@ -23,18 +17,47 @@
       250: [],
     };
 
-    let lines = data.split("\n");
-    // Beginn bei 1, da erste Zeile "1" ist/Startfall
-    for (let a = 1; a < lines.length; a++) {
-      if (lines[a] === "") {
-        //Damit SectionNr in nächster Line nicht beim nächsten Durchlauf gepusht wird
+    let lines = data
+      .replaceAll("\r", "")
+      .split("\n")
+      .filter((x) => x !== "");
+
+    for (let a = 0; a < lines.length; a++) {
+      if (lines[a].includes("Abteilung")) {
+        let shortened = lines[a].replace("Abteilung ", "");
+        currentSection = shortened as SectionNr;
+        //Weil nächste Zeile "Name_Vorname" ist
         a++;
-        currentSection = lines[a] as SectionNr;
       } else {
         retData[currentSection].push(lines[a]);
       }
     }
+    if (!$config.seeAll) {
+      delete retData["1"];
+    }
     return retData;
+  };
+
+  const parseTableData = (parsedData: ParsedData): TableParsedData => {
+    let retData: TableParsedData = [];
+    let maxColumnHeight = calcMaxColumnHeight(parsedData);
+    let columns = Object.values(parsedData);
+    for (let a = 0; a < maxColumnHeight; a++) {
+      let row: string[] = [];
+      columns.forEach((x) => {
+        row.push(x[a] || "");
+      });
+      retData.push(row);
+    }
+    return retData;
+  };
+
+  const parseSectionNames = (parsedData: ParsedData): string[] => {
+    let retVal = [];
+    Object.keys(parsedData).forEach((x) => {
+      retVal.push(gSectionNameMap[x]);
+    });
+    return retVal;
   };
 
   const calcMaxColumnHeight = (parsedData: ParsedData) => {
@@ -46,15 +69,14 @@
   };
 
   const uFetchData = () => {
-    fetch($config.serverPath, {
+    fetch($config.env === "prod" ? $config.serverPath : "mockData.txt", {
       method: "GET",
     }).then(
       (x) => {
         x.text().then((x) => {
-          parsedData = parseData(x);
-          parsedData = parsedData;
-          maxColumnHeight = calcMaxColumnHeight(parsedData);
-          console.log("m", maxColumnHeight);
+          let parsedData = parseData(x);
+          tableData = parseTableData(parsedData);
+          sections = parseSectionNames(parsedData);
         });
       },
       (x) => {
@@ -78,13 +100,21 @@
 </script>
 
 <div
-  style="display: flex; flex-direction: row; width:fit-content; height: 200px; overflow-y: scroll;"
+  id="table_wrapper"
+  style="display: flex; flex-direction: column; width:fit-content;"
 >
-  {#each Object.entries(parsedData) as [key, value]}
-    <TableColumn
-      columnName={gSectionNameMap[key]}
-      vals={value}
-      height={maxColumnHeight}
-    />
-  {/each}
+  <TableRow data={sections} isHeader />
+  <div id="table_body">
+    {#each tableData as row}
+      <TableRow data={row} isHeader={false} />
+    {/each}
+  </div>
 </div>
+
+<style>
+  #table_body {
+    height: 60%;
+    overflow-y: scroll;
+    scrollbar-color: #fff rgb(4, 64, 155);
+  }
+</style>

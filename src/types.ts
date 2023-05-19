@@ -4,6 +4,11 @@ type ParsedData = {
   [key in SectionNr]: string[];
 };
 
+type TableParsedData = ParsedColumn[];
+type ParsedColumn = string[];
+
 interface Config {
   serverPath: string;
+  env: "dev" | "prod";
+  seeAll: boolean;
 }
