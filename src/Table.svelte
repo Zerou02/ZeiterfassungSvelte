@@ -1,15 +1,16 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import TableRow from "./TableRow.svelte";
   import { config } from "./store";
+  import TableColumn from "./TableColumn.svelte";
+  import { gSectionNameMap } from "./globals";
 
-  let delta = 0;
+  let maxColumnHeight = 0;
   let parsedData: ParsedData = {
-    1: ["Max Mustermann"],
-    101: ["Max Mustermann"],
-    150: ["Max Mustermann"],
-    200: ["Max Mustermann"],
-    250: ["Max Mustermann"],
+    1: [],
+    101: [],
+    150: [],
+    200: [],
+    250: [],
   };
 
   const parseData = (data: string): ParsedData => {
@@ -21,6 +22,7 @@
       200: [],
       250: [],
     };
+
     let lines = data.split("\n");
     // Beginn bei 1, da erste Zeile "1" ist/Startfall
     for (let a = 1; a < lines.length; a++) {
@@ -29,11 +31,18 @@
         a++;
         currentSection = lines[a] as SectionNr;
       } else {
-        //        retData[currentSection].push(lines[a]);
-        retData[currentSection].push("Mustermann, Max");
+        retData[currentSection].push(lines[a]);
       }
     }
     return retData;
+  };
+
+  const calcMaxColumnHeight = (parsedData: ParsedData) => {
+    let maxVal = 0;
+    Object.values(parsedData).forEach((x) => {
+      maxVal = Math.max(maxVal, x.length);
+    });
+    return maxVal;
   };
 
   const uFetchData = () => {
@@ -44,6 +53,8 @@
         x.text().then((x) => {
           parsedData = parseData(x);
           parsedData = parsedData;
+          maxColumnHeight = calcMaxColumnHeight(parsedData);
+          console.log("m", maxColumnHeight);
         });
       },
       (x) => {
@@ -61,14 +72,19 @@
         setInterval(() => {
           uFetchData();
         }, 2_000);
-        delta = 0;
       });
     });
   });
 </script>
 
-<div style="display: flex; flex-direction: row; gap:20px">
+<div
+  style="display: flex; flex-direction: row; width:fit-content; height: 200px; overflow-y: scroll;"
+>
   {#each Object.entries(parsedData) as [key, value]}
-    <TableRow columnName={key} vals={value} />
+    <TableColumn
+      columnName={gSectionNameMap[key]}
+      vals={value}
+      height={maxColumnHeight}
+    />
   {/each}
 </div>
