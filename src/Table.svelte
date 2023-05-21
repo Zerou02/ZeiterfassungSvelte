@@ -37,8 +37,6 @@
       .split("\n")
       .filter((x) => x !== "");
 
-    console.log("lines", lines);
-
     for (let a = 0; a < lines.length; a++) {
       if (lines[a].includes("Abteilung")) {
         let shortened = lines[a].replaceAll(" ", "").split("Abteilung");
@@ -122,11 +120,10 @@
   });
 </script>
 
-<div
-  id="table_wrapper"
-  style="display: flex; flex-direction: column; width:fit-content;"
->
-  <TableRow data={sections} isHeader />
+<div id="table_wrapper" style="display: flex; flex-direction: column; ">
+  <div id="table_header_row_wrapper">
+    <TableRow data={sections} isHeader />
+  </div>
   <div id="table_body">
     {#each tableData as row}
       <TableRow data={row} isHeader={false} />
@@ -136,8 +133,20 @@
 
 <style>
   #table_body {
-    height: 60%;
+    height: 100%;
     overflow-y: scroll;
+    background-color: rgb(4, 64, 155);
     scrollbar-color: #fff rgb(4, 64, 155);
+    scrollbar-width: thin;
+  }
+  #table_wrapper {
+    width: 70%;
+    height: 80vh;
+  }
+  #table_header_row_wrapper {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(4, 64, 155) rgb(4, 64, 155);
+    height: 56px;
   }
 </style>

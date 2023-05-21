@@ -16,6 +16,7 @@
     background: linear-gradient(rgb(46, 79, 143), rgb(4, 4, 155));
   }
   h1 {
+    font-size: 33px;
     color: white;
     padding: 0;
     margin: 0;

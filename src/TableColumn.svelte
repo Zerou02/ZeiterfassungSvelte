@@ -35,6 +35,5 @@
   }
   .header_cell {
     border: 1px solid rgb(87, 130, 218);
-    min-width: 100px;
   }
 </style>
