@@ -41,12 +41,12 @@
 
     for (let a = 0; a < lines.length; a++) {
       if (lines[a].includes("Abteilung")) {
-        let shortened = lines[a].replace("Abteilung ", "");
-        console.log(shortened);
-
-        currentSection = shortened as SectionNr;
+        let shortened = lines[a].replaceAll(" ", "").split("Abteilung");
+        currentSection = shortened[shortened.length - 1] as SectionNr;
       } else {
-        retData[currentSection].push(lines[a]);
+        if (lines[a] !== "0") {
+          retData[currentSection].push(lines[a]);
+        }
       }
     }
     if (!$config.seeAll) {
