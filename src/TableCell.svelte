@@ -26,11 +26,13 @@
   .content_cell {
     border: 1px solid #b46415;
     border-top: none;
-    background: rgb(4, 64, 155);
   }
   .header_cell {
     border: 1px solid rgb(87, 130, 218);
-    background: linear-gradient(rgb(46, 79, 143), rgb(4, 4, 155));
+    background: linear-gradient(
+      rgba(46, 79, 143, 0.975),
+      rgb(4, 4, 155, 0.975)
+    );
   }
   .cell {
     display: flex;

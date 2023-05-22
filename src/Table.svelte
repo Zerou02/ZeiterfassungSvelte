@@ -135,7 +135,7 @@
   #table_body {
     height: 100%;
     overflow-y: scroll;
-    background-color: rgb(4, 64, 155);
+    background-color: rgba(4, 64, 155, 0.95);
     scrollbar-color: #fff rgb(4, 64, 155);
     scrollbar-width: thin;
   }
@@ -146,7 +146,7 @@
   #table_header_row_wrapper {
     overflow-y: scroll;
     scrollbar-width: thin;
-    scrollbar-color: rgb(4, 64, 155) rgb(4, 64, 155);
+    scrollbar-color: rgba(4, 64, 155, 0.9) rgba(4, 64, 155, 0.9);
     height: 56px;
   }
 </style>

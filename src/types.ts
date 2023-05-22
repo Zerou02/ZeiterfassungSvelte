@@ -13,3 +13,8 @@ interface Config {
   seeAll: boolean;
   debug: boolean;
 }
+
+interface Vector2 {
+  x: number;
+  y: number;
+}
