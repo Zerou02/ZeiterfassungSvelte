@@ -42,7 +42,7 @@
         let shortened = lines[a].replaceAll(" ", "").split("Abteilung");
         currentSection = shortened[shortened.length - 1] as SectionNr;
       } else {
-        if (lines[a] !== "0") {
+        if (lines[a].length > 2) {
           retData[currentSection].push(lines[a]);
         }
       }
