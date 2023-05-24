@@ -20,22 +20,11 @@
       250: [],
     };
 
-    let lines = data
-      .replaceAll("\r", "")
-      .replaceAll("<h2>", "")
-      .replaceAll("</h2>", "")
-      .replaceAll("No rows found", "")
-      .replaceAll("Name_Vorname", "")
-      .replaceAll("<table  >", "")
-      .replaceAll("</table>", "")
-      .replaceAll("<tr>", "")
-      .replaceAll("</tr>", "")
-      .replaceAll("<th>", "")
-      .replaceAll("</th>", "")
-      .replaceAll("<td>", "")
-      .replaceAll("</td>", "")
-      .split("\n")
-      .filter((x) => x !== "");
+    let lines = data.split(";").filter((x) => x !== "");
+
+    if ($config.debug) {
+      console.log("lines", lines);
+    }
 
     for (let a = 0; a < lines.length; a++) {
       if (lines[a].includes("Abteilung")) {

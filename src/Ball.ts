@@ -8,7 +8,7 @@ export class Ball {
   direction: Vector2;
 
   toDestroy: boolean;
-
+  alreadyCollided: boolean;
   constructor(
     x: number,
     y: number,
@@ -22,6 +22,7 @@ export class Ball {
     this.velocity = velocity;
     this.direction = direction;
     this.toDestroy = false;
+    this.alreadyCollided = false;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -42,6 +43,27 @@ export class Ball {
       this.y - this.radius < 0
     ) {
       this.toDestroy = true;
+    }
+  }
+
+  isColliding(ball: Ball) {
+    const dx = this.x - ball.x;
+    const dy = this.y - ball.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    return distance < this.radius + ball.radius;
+  }
+
+  handleCollision(ball: Ball) {
+    if (this.isColliding(ball) && !this.alreadyCollided) {
+      let tmpVel = this.velocity;
+      let tmpDir = this.direction;
+      this.direction = ball.direction;
+      this.velocity = ball.velocity;
+      ball.velocity = tmpVel;
+      ball.direction = tmpDir;
+      this.alreadyCollided = true;
+      ball.alreadyCollided = true;
     }
   }
 }
